@@ -32,12 +32,10 @@ Installation
 Getting Started
 ---------------
 
-...description
-
 ```js
 import * as powerglove from 'powerglove';
 
-// Pipe a value through a series of functions
+// Let's try piping a value through a series of functions
 void async () => {
   const result = await powerglove.pipe(
     n => 2,
@@ -48,7 +46,7 @@ void async () => {
   // -> 42
 }();
 
-// Pipe a value through an series of async functions
+// We can do the same with a series of async functions
 void async () => {
   const result = await powerglove.pipe(
     async (n) => {
