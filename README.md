@@ -56,7 +56,7 @@ Okay, nothing special. But we have complete interop between async and async func
 
 ```js
 void async () => {
-  const result = await hello('world');
+  const result = await hello('world')
   console.log(result)
   // -> 'HELLO, WORLD!'
 }()
