@@ -35,7 +35,7 @@ Getting Started
 ...description
 
 ```js
-import * as powerglove 'powerglove';
+import * as powerglove from 'powerglove';
 
 // Pipe a value through a series of functions
 void async () => {
