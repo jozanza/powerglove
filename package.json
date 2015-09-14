@@ -1,0 +1,62 @@
+{
+  "name": "powerglove",
+  "version": "0.1.0",
+  "description": "Async generator-based control flow",
+  "author": "Josiah Savary <hello@jsavary.com> (https://jsavary.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/jozanza/powerglove",
+  "main": "lib/index.js",
+  "engines": {
+    "node": "4.0.0",
+    "npm": "2.14"
+  },
+  "scripts": {
+    "postinstall": "npm run -s babel",
+    "test": "npm run -s mocha -- --reporter nyan --require mocha.config test/*.spec.js",
+    "babel": "npm run -s rimraf -- lib && babel src --out-dir lib --stage 0 --optional runtime",
+    "lint": "npm run -s eslint -s -- src && cat winning.txt",
+    "coverage": "npm run -s istanbul -- cover node_modules/.bin/_mocha -- --reporter nyan --require mocha.config test/*.spec.js",
+    "update-coverage": "npm run -s coverage && cat ./coverage/lcov.info | npm run -s coveralls && rm -rf ./coverage",
+    "coveralls": "node_modules/.bin/coveralls",
+    "eslint": "node_modules/.bin/eslint",
+    "istanbul": "node_modules/.bin/istanbul",
+    "mocha": "node_modules/.bin/mocha",
+    "rimraf": "node_modules/.bin/rimraf"
+  },
+  "precommit.silent": true,
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jozanza/powerglove.git"
+  },
+  "keywords": [
+    "async",
+    "async functions",
+    "async generators",
+    "generators",
+    "generator functions",
+    "control flow",
+    "flow control"
+  ],
+  "bugs": {
+    "url": "https://github.com/jozanza/powerglove/issues"
+  },
+  "dependencies": {
+    "babel": "5.8.21",
+    "babel-runtime": "^5.8.20",
+    "rimraf": "2.4.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "4.0.10",
+    "chai": "3.2.0",
+    "coveralls": "^2.11.4",
+    "eslint": "1.2.1",
+    "istanbul": "0.3.18",
+    "jsdom": "6.1.0",
+    "mocha": "2.2.5",
+    "pre-commit": "1.1.1"
+  }
+}
