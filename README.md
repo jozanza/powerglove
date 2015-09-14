@@ -22,7 +22,7 @@
 
 - [Installation](#installation)
 - [Getting Started](#getting-started)
-- [API](#API)
+- [Utils](#API)
 
 Installation
 ------------
@@ -70,12 +70,10 @@ void async () => {
 }();
 ```
 
-API
----
+Utils
+-----
 
-## Utils
-
-### pipe(...tasks)
+### pipe(value[, ...tasks])
 ```js
 /**
  *
