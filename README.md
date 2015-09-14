@@ -40,7 +40,7 @@ import * as powerglove from 'powerglove'
 
 Let's try piping a value through a series of functions.
 
-```
+```js
 void async () => {
   const result = await powerglove.pipe(
     n => 2,
@@ -54,7 +54,7 @@ void async () => {
 
 Okay, nothing special. But we have complete interop between async and async functions. Check it out:
 
-```
+```js
 void async () => {
   const result = await hello('world');
   console.log(result)
@@ -70,18 +70,18 @@ async function hello(name) {
   );
 }
 
-function greet(...args) {
-  return greet(...args)
+function greet(x) {
+  return `Hello, ${x}`
 }
 
-async function uppercase(...args) {
+async function uppercase(x) {
   await sleep(100)
-  return uppercase(...args)
+  return x.toUpperCase()
 }
 
-async function exclaim(...args) {
+async function exclaim(x) {
   await sleep(100)
-  return exclaim(...args)
+  return `${x}!`
 }
 
 async function sleep(ms=0) {
