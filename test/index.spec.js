@@ -1,99 +1,101 @@
-'use strict';
+'use strict'
 
-import { expect } from 'chai';
-import * as powerglove from '../src';
-
-console.log('---------')
-console.log(powerglove);
-console.log('---------')
-
-let {
+import { expect } from 'chai'
+import * as powerglove from '../src'
+import {
+  all,
   pipe,
+  unary,
+  partial,
   trace,
-  ternary,
-  identity
-} = powerglove;
+  when,
+  identity,
+  sleep,
+  delay,
+  tail
+} from '../src'
+
+console.log('---------')
+console.log(powerglove)
+console.log('---------')
 
 describe('Utils', () => {
 
-  describe('all(...tasks)', () => {
+  describe('all([fn])', () => {
     it('should place all values in an array', async () => {
-      let result = await powerglove.all(
-        () => 1*1,
-        () => 2*2,
-        () => 3*3
-      );
+      let count = 0;
+      let countToOneThousand = tail(1000)(() => ++count)
+      await countToOneThousand()
+      let doWeirdMath = all([
+        () => 1 * 1,
+        () => 2 * 2,
+        () => 3 * 3
+      ])
+      expect(count).to.equal(1000)
       expect(
-        [1, 4, 9].every(isEqualToValueOf(result))
-      ).to.equal(true);
-    });
-  });
+        Array.every(
+          await doWeirdMath(),
+          isEqualToValueOf([1, 4, 9])
+        )
+      ).to.equal(true)
+    })
+  })
 
-  describe('pipe(value[, ...tasks])', () => {
-    it('should iterate a synchronous series', async () => {
-      let result = await pipe(
-        n => 2,
+  describe('pipe(value[, [fn]])', () => {
+    it('should iterate a synchronous sequence', async () => {
+      let doWeirdMath = pipe([
         n => n + 4,
         n => n * 7
-      );
-      expect(result).to.equal(42);
-      async function hello(name) {
-        return await pipe(
-          name,
-          greet,
-          uppercase,
-          exclaim,
-          ternary(
-            hasBadWords,
-            chide,
-            identity
-          )
-        );
-      }
-      let canonicalPhrase = await hello('world')
-      let naughtyPhrase = await hello('fucker')
-      console.log(canonicalPhrase)
-      console.log(naughtyPhrase)
-      expect(canonicalPhrase).to.equal('HELLO, WORLD!')
-    });
-    it('should iterate an async series', async () => {
-      let result = await powerglove.pipe(
-        async (n) => {
-          await sleep(100)
-          return 2
-        },
-        async (n) => {
-          await sleep(100)
-          return n + 4
-        },
-        async (n) => {
-          await sleep(100)
-          return n * 7
-        },
-      );
-      expect(result).to.equal(42);
-      async function hello(name) {
-        return await powerglove.pipe(
-          name,
-          greetAsync,
-          uppercaseAsync,
-          exclaimAsync
-        );
-      }
-      let canonicalPhrase = await hello('world')
-      expect(canonicalPhrase).to.equal('HELLO, WORLD!')
-    });
-  });
+      ])
+      let sayHello = pipe([
+        greet,
+        uppercase,
+        exclaim,
+        when(hasBadWords)
+          (chide)
+          (),
+      ])
+      expect(await doWeirdMath(2))
+        .to
+        .equal(42)
+      expect(await sayHello('world'))
+        .to
+        .equal('HELLO, WORLD!')
+      expect(await sayHello('fucker'))
+        .to
+        .equal(
+          '"HELLO, FUCKER!" contains naughty words, '+
+          'and you should be ashamed of yourself.'
+        )
+    })
+    it('should iterate an async sequence', async () => {
+      let doWeirdMath = pipe([
+        delay(100)
+          (n => n + 4),
+        delay(100)
+          (n => n * 7)
+      ])
+      let sayHello = pipe([
+        delay(100)
+          (greet),
+        delay(100)
+          (uppercase),
+        delay(100)
+          (exclaim),
+        delay(100)
+          (when(hasBadWords)
+            (chide)
+            (identity))
+      ])
+      expect(await doWeirdMath(2)).to.equal(42)
+      expect(await sayHello('world')).to.equal('HELLO, WORLD!')
+    })
+  })
 
-});
+})
 
 function isEqualToValueOf(arr) {
-  return (val, i) => val === arr[i];
-}
-async function sleep(ms=0) {
-  return new Promise(fulfill => {
-    setTimeout(fulfill, ms)
-  })
+  return (val, i) => val === arr[i]
 }
 function greet(x) {
   return `Hello, ${x}`
@@ -104,29 +106,19 @@ function uppercase(x) {
 function exclaim(x) {
   return `${x}!`
 }
-async function greetAsync(...args) {
-  await sleep(100)
-  return greet(...args)
-}
-async function uppercaseAsync(...args) {
-  await sleep(100)
-  return uppercase(...args)
-}
-async function exclaimAsync(...args) {
-  await sleep(100)
-  return exclaim(...args)
-}
-async function hasBadWords(words) {
-  sleep(100);
+function hasBadWords(words) {
   return /bitch|shit|fuck|ass/gi.test(words)
 }
-async function chide(x) {
-  return pipe(
-    x,
-    _x => `"${_x}" contains naughty words`,
-    async (_x) => {
-      sleep(100);
-      return _x += ', and you should be ashamed of yourself.'
-    }
-  )
+async function callEmOut(x) {
+  return `"${x}" contains naughty words`
+}
+async function dropTheMic(x) {
+  return `${x}, and you should be ashamed of yourself.`
+}
+function chide(x) {
+  return pipe([
+    callEmOut,
+    delay(100)
+      (dropTheMic)
+  ])(x)
 }
