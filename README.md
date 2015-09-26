@@ -35,7 +35,6 @@ API
 **Example:**
 
 ```js
-// pipe :: [(a -> b)] -> (c -> Promise) -> d
 import { pipe } from 'powerglove'
 
 void async () => {
@@ -62,12 +61,11 @@ void async () => {
 **Example:**
 
 ```js
-// all :: [(a -> b)] -> (c -> Promise) -> [d]
 import { all } from 'powerglove'
 
 void async () => {
 
-  // sayHi :: (String -> Promise) -> String
+  // sayHi :: (String -> Promise) -> [String]
   const sayHi = all([
     x => `Hello, ${x}!`,
     x => `¡Hola, ${x}!`,
