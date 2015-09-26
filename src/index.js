@@ -87,6 +87,12 @@ export async function sleep(ms=0) {
   });
 }
 
+export function DOMEvent(name) {
+  return elem => new Promise(fulfill => {
+    elem.addEventListener(name, fulfill);
+  });
+}
+
 // delay :: Number -> (...a -> b)
 export function delay(ms=0) {
   // for some reason async arrow fn
