@@ -26,6 +26,7 @@ API
 - [`pipe`](#pipefunction---promise---)
 - [`all`](#allfunction---promise---)
 - [`tail`](#tailnumberfunction---promise---)
+- ...more docs coming soon!
 
 <hr />
 
