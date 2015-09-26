@@ -23,9 +23,9 @@
 API
 ---
 
-- [`pipe`](#pipefunction--promise----promise---)
-- [`all`](#allfunction--promise----promise---)
-- [`tail`](#tailfunction--promise----promise---)
+- [`pipe`](#pipefunction---promise---)
+- [`all`](#allfunction---promise---)
+- [`tail`](#tailnumberfunction---promise---)
 
 <hr />
 
