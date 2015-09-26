@@ -21,6 +21,22 @@ console.log('---------')
 
 describe('Utils', () => {
 
+  describe('when(Function)(Function)(Function) -> Promise -> *', async () => {
+    let over9000 = when(lvl => lvl > 9000)
+      (lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`)
+      (lvl => `Pffft. ${lvl}? Is that all you got???`)
+    it('should go left when true', async () => {
+      expect(await over9000(9001)).to.equal(
+        `Holy crap! 9001?! THAT'S OVER 9000!`
+      )
+    })
+    it('should go right when false', async () => {
+      expect(await over9000(1)).to.equal(
+        `Pffft. 1? Is that all you got???`
+      )
+    })
+  })
+
   describe('tail(Number)(Function) -> Promise -> *', function () {
     this.timeout(30000); // tests may take a while
     it('should return identity when 0 calls are made', async () => {

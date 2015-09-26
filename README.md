@@ -26,6 +26,7 @@ API
 - [`pipe`](#pipefunction---promise---)
 - [`all`](#allfunction---promise---)
 - [`tail`](#tailnumberfunction---promise---)
+- [`when`](#whenfunctionfunctionfunction---promise---)
 - ...more docs coming soon!
 
 <hr />
@@ -97,6 +98,30 @@ void async () => {
 
   await addOneHundredThousand(0)
   // -> 100000
+
+}()
+```
+
+<hr />
+
+##### `when(Function)(Function)(Function) -> Promise -> *`
+
+`when` accepts a function or async function that returns `true` or `false`.
+It curries two successive functions; The first accepts a callback that gets called when the initial function returns `true`. The second accepts a callback that gets called when the initial function returns `false`.
+
+**Example:**
+
+```js
+import { when } from 'powerglove'
+
+void async () => {
+
+  let over9000 = when(lvl => lvl > 9000)
+    (lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`) // true
+    (lvl => `Pffft. ${lvl}? Is that all you got???`) // false
+
+  await over9000(9001)
+  // -> `Holy crap! 9001?! THAT'S OVER 9000!`
 
 }()
 ```
