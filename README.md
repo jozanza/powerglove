@@ -27,8 +27,8 @@ API
 - [`all([Function...])`](#all)
 
 ### pipe
-##### `@param  {[Function]} fns Array of functions to pipe value through`
-##### `@return Function -> Promise`
+- @param  `{[Function]} fns Array of functions to pipe value through`
+- @return `Function -> Promise`
 
 `pipe` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
 
