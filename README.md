@@ -18,7 +18,7 @@
 
 # Powerglove
 
-###### `npm install powerglove`
+##### `npm install powerglove`
 
 API
 ---
@@ -54,8 +54,8 @@ void async () => {
 ```
 
 ### all
-##### `@param  {[Function]} fns Array of functions to execute concurrently`
-##### `@return Function -> Promise`
+- @param  `{[Function]} fns Array of functions to execute concurrently`
+- @return `Function -> Promise`
 
 `all` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
 
