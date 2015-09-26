@@ -23,6 +23,8 @@
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [API](#api)
+  - [`pipe([Function...])`](#pipe)
+  - [`all([Function...])`](#all)
 
 Installation
 ------------
@@ -32,19 +34,19 @@ Installation
 API
 ---
 
-#### pipe
+### pipe
+
+`pipe` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
+
+**Example:**
 
 ```js
 // pipe :: [(a -> b)] -> (c -> Promise) -> d
 import { pipe } from 'powerglove'
-```
 
-`pipe` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed through the array of functions in succession.
-
-```js
 void async () => {
 
-  // weirdMath :: (Number a -> Promise) -> Number b
+  // weirdMath :: (Number -> Promise) -> Number
   const weirdMath = pipe([
     n => n / 1,
     n => n + 4,
@@ -57,20 +59,19 @@ void async () => {
 }()
 ```
 
-<hr />
+### all
 
-#### all
+`all` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
+
+**Example:**
 
 ```js
 // all :: [(a -> b)] -> (c -> Promise) -> [d]
 import { all } from 'powerglove'
-```
 
-`all` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array and executes them concurrently.
-
-```js
 void async () => {
 
+  // sayHi :: (String -> Promise) -> String
   const sayHi = all([
     x => `Hello, ${x}!`,
     x => `¡Hola, ${x}!`,
