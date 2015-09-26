@@ -120,7 +120,7 @@ export function tail(num) {
   return f => async () => await trampoline(await repeat(f, num)());
 }
 
-// typeOf :: String -> Bool
+// typeOf :: String -> (a -> Bool)
 export function typeOf(type) {
   return x => {
     if (typeof x === type) return x;

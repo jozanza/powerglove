@@ -23,14 +23,14 @@
 API
 ---
 
-- [`pipe([Function...])`](#pipe)
-- [`all([Function...])`](#all)
+- [`pipe`](#pipe)
+- [`all`](#all)
 
-### pipe
-- @param  `{[Function]} fns Array of functions to pipe value through`
-- @return `Function -> Promise`
+<hr />
 
-`pipe` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
+##### `pipe([Function | Promise, ...]) -> Promise -> *`
+
+`pipe` accepts an array of functions or promises. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
 
 **Example:**
 
@@ -52,11 +52,11 @@ void async () => {
 }()
 ```
 
-### all
-- @param  `{[Function]} fns Array of functions to execute concurrently`
-- @return `Function -> Promise`
+<hr />
 
-`all` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
+##### `all([Function | Promise, ...]) -> Promise -> [*]`
+
+`all` accepts an array of functions or promises. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
 
 **Example:**
 
