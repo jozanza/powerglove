@@ -22,90 +22,67 @@
 
 - [Installation](#installation)
 - [Getting Started](#getting-started)
-- [Utils](#API)
+- [API](#api)
 
 Installation
 ------------
 
 ###### `npm install powerglove`
 
-Getting Started
----------------
+API
+---
 
-Start by importing the module:
+#### pipe
 
 ```js
-import * as powerglove from 'powerglove'
+// pipe :: [(a -> b)] -> (c -> Promise) -> d
+import { pipe } from 'powerglove'
 ```
 
-Let's try piping a value through a series of functions.
+`pipe` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed through the array of functions in succession.
 
 ```js
 void async () => {
-  const result = await powerglove.pipe(
-    n => 2,
+
+  // weirdMath :: (Number a -> Promise) -> Number b
+  const weirdMath = pipe([
+    n => n / 1,
     n => n + 4,
     n => n * 7
-  )
+  ])
+
+  const result = await weirdMath(2)
+
   console.log(result)
   // -> 42
-}();
+
+}()
 ```
 
-Okay, nothing special. But we have complete interop between async and async functions. Check it out:
+<hr />
+
+#### all
+
+```js
+// all :: [(a -> b)] -> (c -> Promise) -> [d]
+import { all } from 'powerglove'
+```
+
+`all` accepts an array of functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array and executes them concurrently.
 
 ```js
 void async () => {
-  const result = await hello('world')
+
+  const sayHi = all([
+    x => `Hello, ${x}!`,
+    x => `¡Hola, ${x}!`,
+    x => `Bonjour, ${x}!`
+  ])
+
+  const result = await sayHi('world')
+
   console.log(result)
-  // -> 'HELLO, WORLD!'
+  // -> [ 'Hello, world!', '¡Hola, world!', 'Bonjour, world!' ]
+
 }()
-
-async function hello(name) {
-  return await powerglove.pipe(
-    name,
-    greet,
-    uppercase,
-    exclaim
-  );
-}
-
-function greet(x) {
-  return `Hello, ${x}`
-}
-
-async function uppercase(x) {
-  await sleep(100)
-  return x.toUpperCase()
-}
-
-async function exclaim(x) {
-  await sleep(100)
-  return `${x}!`
-}
-
-async function sleep(ms=0) {
-  return new Promise(fulfill => {
-    setTimeout(fulfill, ms)
-  })
-}
-
-```
-
-
-
-Utils
------
-
-### pipe(value[, ...tasks])
-```js
-/**
- *
- * Pipes a value through a collection of a/sync functions
- *
- * @param  {*}          value The seed value for the pipe
- *                            immediately invoked if instance of Function
- * @param  {[Function]} tasks An array of functions to pipe `value` through
- * @return {Promise}          Final result of pipe
- */
 ```

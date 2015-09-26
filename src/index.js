@@ -57,10 +57,14 @@ export async function pipeSequence(next, value) {
  */
 export function pipe(tasks=[]) {
   // @todo throw errors
-  return async value => {
-    const S = sequence([() => value, ...tasks]);
+  return async x => {
+    const S = sequence([() => x, ...tasks]);
     return await pipeSequence(::S.next);
   };
+}
+
+export function all(tasks=[]) {
+  return async x =>  await* Array.from(tasks, task => task(x));
 }
 
 export function unary(f) {
@@ -75,10 +79,6 @@ export function partial(numArgs=1) {
 
 export function compose(f, g) {
   return async (...args) => await f(await g(...args));
-}
-
-export function all(tasks=[]) {
-  return async () =>  await* Array.from(tasks, task => task());
 }
 
 export async function sleep(ms=0) {
@@ -111,8 +111,9 @@ export function repeat(f, num) {
 }
 
 export async function trampoline(f) {
-  while(f && typeof fn === 'function')
-    fn = await fn();
+  while(f && typeof f === 'function')
+    f = await f();
+  return f;
 }
 
 export function tail(num) {

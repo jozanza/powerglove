@@ -24,18 +24,26 @@ describe('Utils', () => {
   describe('all([fn])', () => {
     it('should place all values in an array', async () => {
       let count = 0;
-      let countToOneThousand = tail(1000)(() => ++count)
+      let countToOneThousand = tail(100000)(() => {
+        ++count
+        if (count % 1000 === 0) console.log(count);
+      })
+      console.log('done')
       await countToOneThousand()
-      let doWeirdMath = all([
-        () => 1 * 1,
-        () => 2 * 2,
-        () => 3 * 3
+      const sayHi = all([
+        x => `Hello, ${x}!`,
+        x => `¡Hola, ${x}!`,
+        x => `Bonjour, ${x}!`
       ])
       expect(count).to.equal(1000)
       expect(
         Array.every(
-          await doWeirdMath(),
-          isEqualToValueOf([1, 4, 9])
+          await sayHi('world'),
+          isEqualToValueOf([
+            'Hello, world!',
+            '¡Hola, world!',
+            'Bonjour, world!'
+          ])
         )
       ).to.equal(true)
     })
