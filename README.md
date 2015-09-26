@@ -94,7 +94,7 @@ import { tail } from 'powerglove'
 
 void async () => {
 
-  let addOneHundredThousand = tail(100000)(x => x + 1)
+  const addOneHundredThousand = tail(100000)(x => x + 1)
 
   await addOneHundredThousand(0)
   // -> 100000
@@ -116,7 +116,7 @@ import { when } from 'powerglove'
 
 void async () => {
 
-  let over9000 = when(lvl => lvl > 9000)
+  const over9000 = when(lvl => lvl > 9000)
     (lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`) // true
     (lvl => `Pffft. ${lvl}? Is that all you got???`) // false
 
