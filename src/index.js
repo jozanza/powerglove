@@ -74,7 +74,7 @@ export function unary(f) {
 export function partial(numArgs=1) {
   return f => (...args) => (..._args) => {
     return f(..._args.slice(0, numArgs).concat(...args));
-  }
+  };
 }
 
 export function compose(f, g) {
@@ -95,7 +95,7 @@ export function delay(ms=0) {
   return f => async function (...args) {
     await sleep(ms);
     return await f(...args);
-  }
+  };
 }
 
 export function identity(x) {
@@ -111,7 +111,7 @@ export function repeat(f, num) {
 }
 
 export async function trampoline(f) {
-  while(f && typeof f === 'function')
+  while (f && typeof f === 'function')
     f = await f();
   return f;
 }
@@ -124,7 +124,9 @@ export function tail(num) {
 export function typeOf(type) {
   return x => {
     if (typeof x === type) return x;
-    throw new TypeError(`Error: ${type} expected, given ${typeof x}`)
+    throw new TypeError(
+      `Error: ${type} expected, given ${typeof x}`
+    );
   };
 }
 

@@ -23,7 +23,7 @@
     "mocha": "node_modules/.bin/mocha",
     "rimraf": "node_modules/.bin/rimraf"
   },
-  "precommit.silent": true,
+  "precommit.silent": false,
   "pre-commit": [
     "lint",
     "test"
