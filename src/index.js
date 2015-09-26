@@ -102,11 +102,11 @@ export function identity(x) {
   return x;
 }
 
-export function repeat(f, num) {
-  return async () => {
-    if (num <= 0) return;
-    await f();
-    return await repeat(f, --num)();
+export function tail(num) {
+  return f => async function (...args) {
+    return await trampoline(
+      await repeat(num)(f)(...args)
+    );
   };
 }
 
@@ -116,8 +116,11 @@ export async function trampoline(f) {
   return f;
 }
 
-export function tail(num) {
-  return f => async () => await trampoline(await repeat(f, num)());
+export function repeat(num) {
+  return f => async value =>
+    num < 1
+      ? value
+      : repeat(--num)(f)(await f(value));
 }
 
 // typeOf :: String -> (a -> Bool)

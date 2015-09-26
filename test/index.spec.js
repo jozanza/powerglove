@@ -21,21 +21,34 @@ console.log('---------')
 
 describe('Utils', () => {
 
-  describe('all([fn])', () => {
+  describe('tail(Number)(Function) -> Promise -> *', function () {
+    this.timeout(30000); // tests may take a while
+    it('should return identity when 0 calls are made', async () => {
+      let identity = tail(0)(x => 'this should never get hit');
+      expect(await identity(10)).to.equal(10);
+    })
+    it('should play nice with async functions', async () => {
+      let minusOne = delay(100)(x => x - 1);
+      let minusOneHundred = tail(100)(minusOne);
+      expect(await minusOneHundred(0))
+        .to
+        .equal(-100)
+    })
+    it('should call a function a hundred thousand times', async () => {
+      let addOneHundredThousand = tail(100000)(x => x + 1);
+      expect(await addOneHundredThousand(0))
+        .to
+        .equal(100000)
+    })
+  })
+
+  describe('all([Function | Promise]) -> Promise -> [*]', () => {
     it('should place all values in an array', async () => {
-      let count = 0;
-      let countToOneThousand = tail(1000)(() => {
-        ++count
-        if (count % 1000 === 0) console.log(count);
-      })
-      console.log('done')
-      await countToOneThousand()
       const sayHi = all([
         x => `Hello, ${x}!`,
         x => `¡Hola, ${x}!`,
         x => `Bonjour, ${x}!`
       ])
-      expect(count).to.equal(1000)
       expect(
         Array.every(
           await sayHi('world'),
@@ -49,7 +62,7 @@ describe('Utils', () => {
     })
   })
 
-  describe('pipe(value[, [fn]])', () => {
+  describe('pipe([Function | Promise]) -> Promise -> *', () => {
     it('should iterate a synchronous sequence', async () => {
       let doWeirdMath = pipe([
         n => n + 4,

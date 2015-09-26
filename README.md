@@ -25,12 +25,13 @@ API
 
 - [`pipe`](#pipefunction--promise----promise---)
 - [`all`](#allfunction--promise----promise---)
+- [`tail`](#tailfunction--promise----promise---)
 
 <hr />
 
-##### `pipe([Function | Promise, ...]) -> Promise -> *`
+##### `pipe([Function]) -> Promise -> *`
 
-`pipe` accepts an array of functions or promises. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
+`pipe` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
 
 **Example:**
 
@@ -53,9 +54,9 @@ void async () => {
 
 <hr />
 
-##### `all([Function | Promise, ...]) -> Promise -> [*]`
+##### `all([Function]) -> Promise -> [*]`
 
-`all` accepts an array of functions or promises. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
+`all` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
 
 **Example:**
 
@@ -72,6 +73,29 @@ void async () => {
 
   await sayHi('world')
   // -> [ 'Hello, world!', '¡Hola, world!', 'Bonjour, world!' ]
+
+}()
+```
+
+<hr />
+
+##### `tail(Number)(Function) -> Promise -> *`
+
+`tail` accepts a number of times to recursively call a function or async function.
+It implements trampoline, so you can call a function a very large number of times
+without causing a stack overflow.
+
+**Example:**
+
+```js
+import { tail } from 'powerglove'
+
+void async () => {
+
+  let addOneHundredThousand = tail(100000)(x => x + 1)
+
+  await addOneHundredThousand(0)
+  // -> 100000
 
 }()
 ```
