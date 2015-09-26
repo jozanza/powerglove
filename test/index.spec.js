@@ -24,7 +24,7 @@ describe('Utils', () => {
   describe('all([fn])', () => {
     it('should place all values in an array', async () => {
       let count = 0;
-      let countToOneThousand = tail(100000)(() => {
+      let countToOneThousand = tail(1000)(() => {
         ++count
         if (count % 1000 === 0) console.log(count);
       })
