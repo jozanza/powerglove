@@ -23,8 +23,8 @@
 API
 ---
 
-- [`pipe`](#pipe)
-- [`all`](#all)
+- [`pipe`](#pipefunction--promise----promise---)
+- [`all`](#allfunction--promise----promise---)
 
 <hr />
 
@@ -39,7 +39,6 @@ import { pipe } from 'powerglove'
 
 void async () => {
 
-  // weirdMath :: (Number -> Promise) -> Number
   const weirdMath = pipe([
     n => n / 1,
     n => n + 4,
@@ -65,7 +64,6 @@ import { all } from 'powerglove'
 
 void async () => {
 
-  // sayHi :: (String -> Promise) -> [String]
   const sayHi = all([
     x => `Hello, ${x}!`,
     x => `¡Hola, ${x}!`,
