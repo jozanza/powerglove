@@ -18,8 +18,6 @@
 
 # Powerglove
 
-### Table of Contents
-
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [API](#api)
