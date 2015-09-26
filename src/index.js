@@ -87,11 +87,15 @@ export async function sleep(ms=0) {
   });
 }
 
-export function DOMEvent(name) {
-  return elem => new Promise(fulfill => {
-    elem.addEventListener(name, fulfill);
-  });
-}
+// export function DOMEvent(name) {
+//   return elem => new Promise(fulfill => {
+//     function listener (...args) {
+//       elem.removeEventListener(name, listener, false);
+//       fulfill(...args);
+//     }
+//     elem.addEventListener(name, listener, false);
+//   });
+// }
 
 // delay :: Number -> (...a -> b)
 export function delay(ms=0) {
@@ -139,9 +143,9 @@ export function typeOf(type) {
   };
 }
 
-export function resolve(f) {
-  return async (...args) => await f(...args);
-}
+// export function resolve(f) {
+//   return async (...args) => await f(...args);
+// }
 
 // when :: (a -> Bool) -> (a -> b) -> (a -> c)
 export function when(expect) {

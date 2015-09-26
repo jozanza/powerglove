@@ -27,6 +27,7 @@ API
 - [`all`](#allfunction---promise---)
 - [`tail`](#tailnumberfunction---promise---)
 - [`when`](#whenfunctionfunctionfunction---promise---)
+- [`delay`](#delaynumberfunction---promise---)
 - ...more docs coming soon!
 
 <hr />
@@ -122,6 +123,27 @@ void async () => {
 
   await over9000(9001)
   // -> `Holy crap! 9001?! THAT'S OVER 9000!`
+
+}()
+```
+
+<hr />
+
+##### `delay(Number)(Function) -> Promise -> *`
+
+`delay` accepts a number of ms to wait before calling a function or async function.
+
+**Example:**
+
+```js
+import { delay } from 'powerglove'
+
+void async () => {
+
+  const timeDiff = delay(300)(ms => Date.now() - ms)
+
+  await timeDiff(Date.now())
+  // -> ~300ms
 
 }()
 ```
