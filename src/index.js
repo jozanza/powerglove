@@ -67,19 +67,19 @@ export function all(tasks=[]) {
   return async x =>  await* Array.from(tasks, task => task(x));
 }
 
-export function unary(f) {
-  return (...args) => x => f(x, ...args);
-}
-
-export function partial(numArgs=1) {
-  return f => (...args) => (..._args) => {
-    return f(..._args.slice(0, numArgs).concat(...args));
-  };
-}
-
-export function compose(f, g) {
-  return async (...args) => await f(await g(...args));
-}
+// export function unary(f) {
+//   return (...args) => x => f(x, ...args);
+// }
+//
+// export function partial(numArgs=1) {
+//   return f => (...args) => (..._args) => {
+//     return f(..._args.slice(0, numArgs).concat(...args));
+//   };
+// }
+//
+// export function compose(f, g) {
+//   return async (...args) => await f(await g(...args));
+// }
 
 export async function sleep(ms=0) {
   return new Promise(fulfill => {
@@ -134,14 +134,14 @@ export function repeat(num) {
 }
 
 // typeOf :: String -> (a -> Bool)
-export function typeOf(type) {
-  return x => {
-    if (typeof x === type) return x;
-    throw new TypeError(
-      `Error: ${type} expected, given ${typeof x}`
-    );
-  };
-}
+// export function typeOf(type) {
+//   return x => {
+//     if (typeof x === type) return x;
+//     throw new TypeError(
+//       `Error: ${type} expected, given ${typeof x}`
+//     );
+//   };
+// }
 
 // export function resolve(f) {
 //   return async (...args) => await f(...args);
@@ -156,8 +156,8 @@ export function when(expect) {
         : await nope(value);
 }
 
-export function trace(x){
-  return !console.log(x)
-    ? x
-    : 'this will never happen :)';
-}
+// export function trace(x){
+//   return !console.log(x)
+//     ? x
+//     : 'this will never happen :)';
+// }

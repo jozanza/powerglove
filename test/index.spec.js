@@ -5,12 +5,8 @@ import * as powerglove from '../src'
 import {
   all,
   pipe,
-  unary,
-  partial,
-  trace,
   when,
   identity,
-  sleep,
   delay,
   tail
 } from '../src'
