@@ -51,9 +51,7 @@ void async () => {
     n => n * 7
   ])
 
-  const result = await weirdMath(2)
-
-  console.log(result)
+  await weirdMath(2)
   // -> 42
 
 }()
@@ -79,9 +77,7 @@ void async () => {
     x => `Bonjour, ${x}!`
   ])
 
-  const result = await sayHi('world')
-
-  console.log(result)
+  await sayHi('world')
   // -> [ 'Hello, world!', '¡Hola, world!', 'Bonjour, world!' ]
 
 }()
