@@ -50,8 +50,8 @@ describe('Utils', () => {
 
   describe('delay(Number)(Function)', () => {
     it('should execute the function after ~300ms', async () => {
-      const timeDiff = delay(300)(ms => Date.now() - ms)
-      expect(await timeDiff(Date.now())).to.be.at.least(300)
+      const timeSince = delay(300)(ms => Date.now() - ms)
+      expect(await timeSince(Date.now())).to.be.within(300, 310)
     })
   })
 

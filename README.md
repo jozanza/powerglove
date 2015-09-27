@@ -193,9 +193,9 @@ import { delay } from 'powerglove'
 
 void async () => {
 
-  const timeDiff = delay(300)(ms => Date.now() - ms)
+  const timeSince = delay(300)(ms => Date.now() - ms)
 
-  await timeDiff(Date.now())
+  await timeSince(Date.now())
   // -> ~300ms
 
 }()
