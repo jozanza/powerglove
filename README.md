@@ -33,9 +33,9 @@ API
 
 <hr />
 
-###### pipe
+### pipe
 
-##### `pipe([f1, f2, ...fn]) -> Function(*) -> Promise -> *`
+##### `pipe([Function f, ...]) -> Function(*) -> Promise -> *`
 
 Accepts an array of functions or async functions and returns a unary function
 that accepts any value. That value will be passed to the first function in the
@@ -64,7 +64,7 @@ void async () => {
 
 ### all
 
-##### `all([f1, f2, ...fn]) -> Function(*) -> Promise -> [*]`
+##### `all([Function f, ...]) -> Function(*) -> Promise -> [*]`
 
 Accepts an array of functions or async functions and returns a unary function
 that accepts any value. That value will be passed to all functions in the array,
@@ -94,7 +94,7 @@ void async () => {
 
 ### race
 
-##### `race([f1, f2, ...fn]) -> Function(*) -> Promise -> *`
+##### `race([Function f, ...]) -> Function(*) -> Promise -> *`
 
 Accepts an array of functions or async functions and returns a unary function
 that accepts any value. That value will be passed to all functions in the array,
@@ -129,10 +129,10 @@ void async () => {
 
 ### until
 
-##### `until(test)(callback) -> Function(*) -> Promise -> *`
+##### `until(Function test)(Function cb) -> Function(*) -> Promise -> *`
 
-Executes `callback` until `test` returns `true`. The return value of
-the previous `callback` is passed into the next on each iteration.
+Executes `cb` until `test` returns `true`. The return value of
+the previous `cb` is passed into the next on each iteration.
 
 **Example:**
 
@@ -166,7 +166,7 @@ void async () => {
 
 ### when
 
-##### `when(test)(pass)(fail) -> Function(*) -> Promise -> *`
+##### `when(Function test)(Function pass)(Function fail) -> Function(*) -> Promise -> *`
 
 Executes `pass` if `test` returns `true`, otherwise it calls `fail`.
 
@@ -198,9 +198,9 @@ void async () => {
 
 ### delay
 
-##### `delay(ms)(callback) -> Function(*) -> Promise -> *`
+##### `delay(Number ms)(Function cb) -> Function(*) -> Promise -> *`
 
-Accepts `ms`, number of milliseconds to wait, before executing `callback`.
+Accepts `ms`, number of milliseconds to wait, before executing `cb`.
 
 **Example:**
 
