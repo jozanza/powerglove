@@ -84,8 +84,7 @@ void async () => {
 
 ##### `until(Function)(Function) -> Promise -> *`
 
-`tail` accepts a function or async function that returns true or false. If it
-returns true, recursive function calls will continue;
+`tail` accepts a function or async function that returns true or false. Recursive function calls will continue until it returns true;
 It implements trampoline, so you can call a function a very large number of times
 without causing a stack overflow.
 
