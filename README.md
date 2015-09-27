@@ -23,12 +23,12 @@
 API
 ---
 
-- [`pipe`](#pipefunction---promise---)
-- [`all`](#allfunction---promise---)
-- [`race`](#racefunction---promise---)
-- [`until`](#untilfunctionfunction---promise---)
-- [`when`](#whenfunctionfunctionfunction---promise---)
-- [`delay`](#delaynumberfunction---promise---)
+- [`pipe`](#pipe)
+- [`all`](#all)
+- [`race`](#race)
+- [`until`](#until)
+- [`when`](#when)
+- [`delay`](#delay)
 - ...more docs coming soon!
 
 <hr />
@@ -62,7 +62,7 @@ void async () => {
 
 <hr />
 
-###### all
+### all
 
 ##### `all([f1, f2, ...fn]) -> Function(*) -> Promise -> [*]`
 
@@ -92,7 +92,7 @@ void async () => {
 
 <hr />
 
-###### race
+### race
 
 ##### `race([f1, f2, ...fn]) -> Function(*) -> Promise -> *`
 
@@ -127,7 +127,7 @@ void async () => {
 
 <hr />
 
-###### until
+### until
 
 ##### `until(test)(callback) -> Function(*) -> Promise -> *`
 
@@ -164,7 +164,7 @@ void async () => {
 
 <hr />
 
-###### when
+### when
 
 ##### `when(test)(pass)(fail) -> Function(*) -> Promise -> *`
 
@@ -196,7 +196,7 @@ void async () => {
 
 <hr />
 
-###### delay
+### delay
 
 ##### `delay(ms)(callback) -> Function(*) -> Promise -> *`
 
