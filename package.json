@@ -1,6 +1,6 @@
 {
   "name": "powerglove",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Async generator-based control flow",
   "author": "Josiah Savary <hello@jsavary.com> (https://jsavary.com)",
   "license": "MIT",
