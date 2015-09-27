@@ -72,27 +72,27 @@ describe('Utils', () => {
     })
   })
 
-  // describe('until(Function)(Function) -> Promise -> *', function () {
-  //   this.timeout(30000); // tests may take a while
-  //   it('should return identity when 0 calls are made', async () => {
-  //     const returnTrue = () => true
-  //     const throwErr = () => { throw new Error() }
-  //     const noop = until(returnTrue)(throwErr);
-  //     expect(await noop(10)).to.equal(10);
-  //   })
-  //   it('should play nice with async functions', async () => {
-  //     const minusminus = delay(10)(x => x - 1)
-  //     const smallEnough = delay(10)(x => x <= 0)
-  //     const subtractAll = until(smallEnough)(minusminus)
-  //     expect(await subtractAll(100)).to.equal(0)
-  //   })
-  //   it('should call a function a ridiculous number of times', async () => {
-  //     const plusplus = x => x + 1
-  //     const largeEnough = x => x >= 100000
-  //     const addALot = until(largeEnough)(plusplus)
-  //     expect(await addALot(0)).to.equal(100000)
-  //   })
-  // })
+  describe('until(Function)(Function) -> Promise -> *', function () {
+    this.timeout(30000); // tests may take a while
+    it('should return identity when 0 calls are made', async () => {
+      const returnTrue = () => true
+      const throwErr = () => { throw new Error() }
+      const noop = until(returnTrue)(throwErr);
+      expect(await noop(10)).to.equal(10);
+    })
+    it('should play nice with async functions', async () => {
+      const minusminus = delay(10)(x => x - 1)
+      const smallEnough = delay(10)(x => x <= 0)
+      const subtractAll = until(smallEnough)(minusminus)
+      expect(await subtractAll(100)).to.equal(0)
+    })
+    it('should call a function a ridiculous number of times', async () => {
+      const plusplus = x => x + 1
+      const largeEnough = x => x >= 100000
+      const addALot = until(largeEnough)(plusplus)
+      expect(await addALot(0)).to.equal(100000)
+    })
+  })
 
   describe('all([Function | Promise]) -> Promise -> [*]', () => {
     it('should place all values in an array', async () => {
