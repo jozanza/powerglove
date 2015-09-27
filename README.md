@@ -25,6 +25,7 @@ API
 
 - [`pipe`](#pipefunction---promise---)
 - [`all`](#allfunction---promise---)
+- [`race`](#racefunction---promise---)
 - [`until`](#untilfunctionfunction---promise---)
 - [`when`](#whenfunctionfunctionfunction---promise---)
 - [`delay`](#delaynumberfunction---promise---)
@@ -82,7 +83,7 @@ void async () => {
 
 <hr />
 
-##### `race([Function]) -> Promise -> [*]`
+##### `race([Function]) -> Promise -> *`
 
 `race` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently. The return value of first function to complete
 will be returned.
