@@ -33,9 +33,13 @@ API
 
 <hr />
 
-##### `pipe([Function]) -> Promise -> *`
+###### pipe
 
-`pipe` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed the first function in the array. Each successive function will pass its fulfilled value to the next once resolved.
+##### `pipe([f1, f2, ...fn]) -> Function(*) -> Promise -> *`
+
+Accepts an array of functions or async functions and returns a unary function
+that accepts any value. That value will be passed to the first function in the
+array. Subsquent functions receive the return value of the previous function.
 
 **Example:**
 
@@ -58,9 +62,14 @@ void async () => {
 
 <hr />
 
-##### `all([Function]) -> Promise -> [*]`
+###### all
 
-`all` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently.
+##### `all([f1, f2, ...fn]) -> Function(*) -> Promise -> [*]`
+
+Accepts an array of functions or async functions and returns a unary function
+that accepts any value. That value will be passed to all functions in the array,
+which are then executed concurrently. Returns an array of values returned from
+each function in the array
 
 **Example:**
 
@@ -83,10 +92,13 @@ void async () => {
 
 <hr />
 
-##### `race([Function]) -> Promise -> *`
+###### race
 
-`race` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently. The return value of first function to complete
-will be returned.
+##### `race([f1, f2, ...fn]) -> Function(*) -> Promise -> *`
+
+Accepts an array of functions or async functions and returns a unary function
+that accepts any value. That value will be passed to all functions in the array,
+which are then executed concurrently. Returns the value of the first function to resolve.
 
 **Example:**
 
@@ -115,11 +127,12 @@ void async () => {
 
 <hr />
 
-##### `until(Function)(Function) -> Promise -> *`
+###### until
 
-`tail` accepts a function or async function that returns true or false. Recursive function calls will continue until it returns true;
-It implements trampoline, so you can call a function a very large number of times
-without causing a stack overflow.
+##### `until(test)(callback) -> Function(*) -> Promise -> *`
+
+Executes `callback` until `test` returns `true`. The return value of
+the previous `callback` is passed into the next on each iteration.
 
 **Example:**
 
@@ -151,10 +164,11 @@ void async () => {
 
 <hr />
 
-##### `when(Function)(Function)(Function) -> Promise -> *`
+###### when
 
-`when` accepts a function or async function that returns `true` or `false`.
-It curries two successive functions; The first accepts a callback that gets called when the initial function returns `true`. The second accepts a callback that gets called when the initial function returns `false`.
+##### `when(test)(pass)(fail) -> Function(*) -> Promise -> *`
+
+Executes `pass` if `test` returns `true`, otherwise it calls `fail`.
 
 **Example:**
 
@@ -182,9 +196,11 @@ void async () => {
 
 <hr />
 
-##### `delay(Number)(Function) -> Promise -> *`
+###### delay
 
-`delay` accepts a number of ms to wait before calling a function or async function.
+##### `delay(ms)(callback) -> Function(*) -> Promise -> *`
+
+Accepts `ms`, number of milliseconds to wait, before executing `callback`.
 
 **Example:**
 
