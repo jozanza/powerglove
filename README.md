@@ -96,14 +96,18 @@ import { until } from 'powerglove'
 void async () => {
 
   const minusminus = x => x - 1
+
   const smallEnough = x => x <= 0
+
   const subtractAll = until(smallEnough)(minusminus)
 
   await subtractAll(100000)
   // -> 0
 
   const plusplus = x => x + 1
+
   const largeEnough = x => x >= 100000
+
   const addALot = until(largeEnough)(plusplus)
 
   await addALot(0)
@@ -126,12 +130,19 @@ import { when } from 'powerglove'
 
 void async () => {
 
-  const over9000 = when(lvl => lvl > 9000)
-    (lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`) // true
-    (lvl => `Pffft. ${lvl}? Is that all you got???`) // false
+  const over9000 = lvl => lvl > 9000
 
-  await over9000(9001)
+  const praise = lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`
+
+  const insult = lvl => `Pffft. ${lvl}? Is that all you got???`
+
+  const analyzePowerLevel = when(over9000)(praise)(insult)
+
+  await analyzePowerLevel(9001)
   // -> `Holy crap! 9001?! THAT'S OVER 9000!`
+
+  await analyzePowerLevel(1)
+  // -> `Pffft. 1? Is that all you got???`
 
 }()
 ```

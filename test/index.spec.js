@@ -25,16 +25,17 @@ describe('Utils', () => {
   })
 
   describe('when(Function)(Function)(Function) -> Promise -> *', async () => {
-    const over9000 = when(lvl => lvl > 9000)
-      (lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`)
-      (lvl => `Pffft. ${lvl}? Is that all you got???`)
-    it('should go left when true', async () => {
-      expect(await over9000(9001)).to.equal(
+    const over9000 = lvl => lvl > 9000
+    const praise = lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`
+    const insult = lvl => `Pffft. ${lvl}? Is that all you got???`
+    const analyzePowerLevel = when(over9000)(praise)(insult)
+    it('should praise when over 9000', async () => {
+      expect(await analyzePowerLevel(9001)).to.equal(
         `Holy crap! 9001?! THAT'S OVER 9000!`
       )
     })
-    it('should go right when false', async () => {
-      expect(await over9000(1)).to.equal(
+    it('should insult when less than 9000', async () => {
+      expect(await analyzePowerLevel(1)).to.equal(
         `Pffft. 1? Is that all you got???`
       )
     })
