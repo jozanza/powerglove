@@ -82,6 +82,38 @@ void async () => {
 
 <hr />
 
+##### `race([Function]) -> Promise -> [*]`
+
+`race` accepts an array of functions or async functions. It returns a unary function that accepts any value. That value will be passed to all functions in the array, which are then executed concurrently. The return value of first function to complete
+will be returned.
+
+**Example:**
+
+```js
+import { race } from 'powerglove'
+
+void async () => {
+
+  const fast = delay(200)(x => `${x} Speed Racer`)
+
+  const faster = delay(100)(x => `${x} Racer X`)
+
+  const fastest = delay(0)(x => `${x} Chim Chim`)
+
+  const announceWinner = race([
+    fast,
+    faster,
+    fastest
+  ])
+
+  await announceWinner('And the winner is...')
+  // -> `And the winner is... Chim Chim!`
+
+}()
+```
+
+<hr />
+
 ##### `until(Function)(Function) -> Promise -> *`
 
 `tail` accepts a function or async function that returns true or false. Recursive function calls will continue until it returns true;

@@ -67,6 +67,10 @@ export function all(tasks=[]) {
   return async x =>  await* Array.from(tasks, task => task(x));
 }
 
+export function race(tasks=[]) {
+  return async x => await Promise.race(Array.from(tasks, task => task(x)));
+}
+
 // export function unary(f) {
 //   return (...args) => x => f(x, ...args);
 // }
