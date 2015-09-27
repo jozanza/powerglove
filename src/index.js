@@ -112,10 +112,10 @@ export function identity(x) {
   return x;
 }
 
-export function tail(num) {
-  return f => async function (...args) {
+export function until(f) {
+  return g => async function (...args) {
     return await trampoline(
-      await repeat(num)(f)(...args)
+      await repeat(f)(g)(...args)
     );
   };
 }
@@ -126,11 +126,12 @@ export async function trampoline(f) {
   return f;
 }
 
-export function repeat(num) {
-  return f => async value =>
-    num < 1
+export function repeat(f) {
+  return g => async function (value) {
+    return await f(value)
       ? value
-      : repeat(--num)(f)(await f(value));
+      : repeat(f)(g)(await g(value));
+  };
 }
 
 // typeOf :: String -> (a -> Bool)

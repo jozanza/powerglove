@@ -25,7 +25,7 @@ API
 
 - [`pipe`](#pipefunction---promise---)
 - [`all`](#allfunction---promise---)
-- [`tail`](#tailnumberfunction---promise---)
+- [`until`](#untilfunctionfunction---promise---)
 - [`when`](#whenfunctionfunctionfunction---promise---)
 - [`delay`](#delaynumberfunction---promise---)
 - ...more docs coming soon!
@@ -82,22 +82,32 @@ void async () => {
 
 <hr />
 
-##### `tail(Number)(Function) -> Promise -> *`
+##### `until(Function)(Function) -> Promise -> *`
 
-`tail` accepts a number of times to recursively call a function or async function.
+`tail` accepts a function or async function that returns true or false. If it
+returns true, recursive function calls will continue;
 It implements trampoline, so you can call a function a very large number of times
 without causing a stack overflow.
 
 **Example:**
 
 ```js
-import { tail } from 'powerglove'
+import { until } from 'powerglove'
 
 void async () => {
 
-  const addOneHundredThousand = tail(100000)(x => x + 1)
+  const minusminus = x => x - 1
+  const smallEnough = x => x <= 0
+  const subtractAll = until(smallEnough)(minusminus)
 
-  await addOneHundredThousand(0)
+  await subtractAll(100000)
+  // -> 0
+
+  const plusplus = x => x + 1
+  const largeEnough = x => x >= 100000
+  const addALot = until(largeEnough)(plusplus)
+
+  await addALot(0)
   // -> 100000
 
 }()
