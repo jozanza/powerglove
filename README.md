@@ -91,7 +91,7 @@ will be returned.
 **Example:**
 
 ```js
-import { race } from 'powerglove'
+import { race, delay } from 'powerglove'
 
 void async () => {
 
