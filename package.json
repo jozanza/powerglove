@@ -11,12 +11,13 @@
     "npm": "2.14"
   },
   "scripts": {
-    "postinstall": "npm run -s babel",
+    "postinstall": "npm run -s compile",
     "test": "npm run -s mocha -- --reporter nyan --require mocha.config test/*.spec.js",
-    "babel": "npm run -s rimraf -- lib && babel src --out-dir lib --stage 0 --optional runtime",
+    "compile": "npm run -s rimraf -- lib && npm run -s babel -- src --out-dir lib --stage 0 --optional runtime",
     "lint": "npm run -s eslint -s -- src && cat winning.txt",
     "coverage": "npm run -s istanbul -- cover node_modules/.bin/_mocha -- --reporter nyan --require mocha.config test/*.spec.js",
     "update-coverage": "npm run -s coverage && cat ./coverage/lcov.info | npm run -s coveralls && rm -rf ./coverage",
+    "babel": "node_modules/.bin/babel",
     "coveralls": "node_modules/.bin/coveralls",
     "eslint": "node_modules/.bin/eslint",
     "istanbul": "node_modules/.bin/istanbul",
