@@ -67,25 +67,39 @@ export function all(tasks=[]) {
   return async x =>  await* Array.from(tasks, task => task(x));
 }
 
-export function unary(f) {
-  return (...args) => x => f(x, ...args);
+export function race(tasks=[]) {
+  return async x => await Promise.race(Array.from(tasks, task => task(x)));
 }
 
-export function partial(numArgs=1) {
-  return f => (...args) => (..._args) => {
-    return f(..._args.slice(0, numArgs).concat(...args));
-  };
-}
-
-export function compose(f, g) {
-  return async (...args) => await f(await g(...args));
-}
+// export function unary(f) {
+//   return (...args) => x => f(x, ...args);
+// }
+//
+// export function partial(numArgs=1) {
+//   return f => (...args) => (..._args) => {
+//     return f(..._args.slice(0, numArgs).concat(...args));
+//   };
+// }
+//
+// export function compose(f, g) {
+//   return async (...args) => await f(await g(...args));
+// }
 
 export async function sleep(ms=0) {
   return new Promise(fulfill => {
     setTimeout(fulfill, ms);
   });
 }
+
+// export function DOMEvent(name) {
+//   return elem => new Promise(fulfill => {
+//     function listener (...args) {
+//       elem.removeEventListener(name, listener, false);
+//       fulfill(...args);
+//     }
+//     elem.addEventListener(name, listener, false);
+//   });
+// }
 
 // delay :: Number -> (...a -> b)
 export function delay(ms=0) {
@@ -98,15 +112,11 @@ export function delay(ms=0) {
   };
 }
 
-export function identity(x) {
-  return x;
-}
-
-export function repeat(f, num) {
-  return async () => {
-    if (num <= 0) return;
-    await f();
-    return await repeat(f, --num)();
+export function until(f) {
+  return g => async function (...args) {
+    return await trampoline(
+      await repeat(f)(g)(...args)
+    );
   };
 }
 
@@ -116,35 +126,37 @@ export async function trampoline(f) {
   return f;
 }
 
-export function tail(num) {
-  return f => async () => await trampoline(await repeat(f, num)());
-}
-
-// typeOf :: String -> Bool
-export function typeOf(type) {
-  return x => {
-    if (typeof x === type) return x;
-    throw new TypeError(
-      `Error: ${type} expected, given ${typeof x}`
-    );
+export function repeat(f) {
+  return g => async function (value) {
+    return await f(value)
+      ? value
+      : repeat(f)(g)(await g(value));
   };
 }
 
-export function resolve(f) {
-  return async (...args) => await f(...args);
-}
 
-// when :: (a -> Bool) -> (a -> b) -> (a -> c)
-export function when(expect) {
-  return (okay) =>
-    (nope=identity) =>
-      async value => await expect(value)
-        ? await okay(value)
-        : await nope(value);
-}
+// when :: (a -> Bool) -> (a -> *) -> (a -> *) -> a -> Promise *
+export { default as when } from './when';
 
-export function trace(x){
-  return !console.log(x)
-    ? x
-    : 'this will never happen :)';
-}
+// curry :: (* -> a) -> Number -> (* -> a)
+export { default as curry } from './curry';
+
+// typeOf :: String -> (a -> Bool)
+// export function typeOf(type) {
+//   return x => {
+//     if (typeof x === type) return x;
+//     throw new TypeError(
+//       `Error: ${type} expected, given ${typeof x}`
+//     );
+//   };
+// }
+
+// export function resolve(f) {
+//   return async (...args) => await f(...args);
+// }
+
+// export function trace(x){
+//   return !console.log(x)
+//     ? x
+//     : 'this will never happen :)';
+// }

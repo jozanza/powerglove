@@ -5,14 +5,11 @@ import * as powerglove from '../src'
 import {
   all,
   pipe,
-  unary,
-  partial,
-  trace,
   when,
   identity,
-  sleep,
   delay,
-  tail
+  until,
+  race
 } from '../src'
 
 console.log('---------')
@@ -21,21 +18,89 @@ console.log('---------')
 
 describe('Utils', () => {
 
-  describe('all([fn])', () => {
+  describe('race([Function])', () => {
+    it('', async () => {
+      const allGone = ([x]) => x <= 0
+      const untilAllGone = until(allGone)
+      const fastSubtract = untilAllGone(
+        ([x, method='a']) => ([x - 1, method])
+      )
+      const slowSubtract = untilAllGone(
+        delay(0)(
+          ([x, method='b']) => ([x - 1, method])
+        )
+      )
+      const firstToZero = race([fastSubtract, slowSubtract])
+      expect((await firstToZero([10]))[1]).to.equal('a')
+    })
+    it('', async () => {
+      const fast = delay(200)(x => `${x} Speed Racer!`)
+      const faster = delay(100)(x => `${x} Racer X!`)
+      const fastest = delay(0)(x => `${x} Chim Chim!`)
+      const announceWinner = race([
+        fast,
+        faster,
+        fastest
+      ])
+      expect(await announceWinner('And the winner is...'))
+        .to
+        .equal(`And the winner is... Chim Chim!`)
+    })
+  })
+
+  describe('delay(Number)(Function)', () => {
+    it('should execute the function after ~300ms', async () => {
+      const timeSince = delay(300)(ms => Date.now() - ms)
+      expect(await timeSince(Date.now())).to.be.within(300, 310)
+    })
+  })
+
+  describe('when(Function)(Function)(Function) -> Promise -> *', async () => {
+    const over9000 = lvl => lvl > 9000
+    const praise = lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`
+    const insult = lvl => `Pffft. ${lvl}? Is that all you got???`
+    const analyzePowerLevel = when(over9000)(praise)(insult)
+    it('should praise when over 9000', async () => {
+      expect(await analyzePowerLevel(9001)).to.equal(
+        `Holy crap! 9001?! THAT'S OVER 9000!`
+      )
+    })
+    it('should insult when less than 9000', async () => {
+      expect(await analyzePowerLevel(1)).to.equal(
+        `Pffft. 1? Is that all you got???`
+      )
+    })
+  })
+
+  describe('until(Function)(Function) -> Promise -> *', function () {
+    this.timeout(30000); // tests may take a while
+    it('should return identity when 0 calls are made', async () => {
+      const returnTrue = () => true
+      const throwErr = () => { throw new Error() }
+      const noop = until(returnTrue)(throwErr);
+      expect(await noop(10)).to.equal(10);
+    })
+    it('should play nice with async functions', async () => {
+      const minusminus = delay(10)(x => x - 1)
+      const smallEnough = delay(10)(x => x <= 0)
+      const subtractAll = until(smallEnough)(minusminus)
+      expect(await subtractAll(100)).to.equal(0)
+    })
+    it('should call a function a ridiculous number of times', async () => {
+      const plusplus = x => x + 1
+      const largeEnough = x => x >= 100000
+      const addALot = until(largeEnough)(plusplus)
+      expect(await addALot(0)).to.equal(100000)
+    })
+  })
+
+  describe('all([Function | Promise]) -> Promise -> [*]', () => {
     it('should place all values in an array', async () => {
-      let count = 0;
-      let countToOneThousand = tail(1000)(() => {
-        ++count
-        if (count % 1000 === 0) console.log(count);
-      })
-      console.log('done')
-      await countToOneThousand()
       const sayHi = all([
         x => `Hello, ${x}!`,
         x => `¡Hola, ${x}!`,
         x => `Bonjour, ${x}!`
       ])
-      expect(count).to.equal(1000)
       expect(
         Array.every(
           await sayHi('world'),
@@ -49,13 +114,13 @@ describe('Utils', () => {
     })
   })
 
-  describe('pipe(value[, [fn]])', () => {
+  describe('pipe([Function | Promise]) -> Promise -> *', () => {
     it('should iterate a synchronous sequence', async () => {
-      let doWeirdMath = pipe([
+      const doWeirdMath = pipe([
         n => n + 4,
         n => n * 7
       ])
-      let sayHello = pipe([
+      const sayHello = pipe([
         greet,
         uppercase,
         exclaim,
@@ -77,13 +142,13 @@ describe('Utils', () => {
         )
     })
     it('should iterate an async sequence', async () => {
-      let doWeirdMath = pipe([
+      const doWeirdMath = pipe([
         delay(100)
           (n => n + 4),
         delay(100)
           (n => n * 7)
       ])
-      let sayHello = pipe([
+      const sayHello = pipe([
         delay(100)
           (greet),
         delay(100)
