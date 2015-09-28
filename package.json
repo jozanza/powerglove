@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "engines": {
     "node": "4.0.0",
-    "npm": "2.14"
+    "npm": "3.3.4"
   },
   "scripts": {
     "postinstall": "npm run -s compile",

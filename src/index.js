@@ -63,59 +63,25 @@ export function pipe(tasks=[]) {
   };
 }
 
-export function all(tasks=[]) {
-  return async x =>  await* Array.from(tasks, task => task(x));
-}
+// all :: [(a -> *)] -> a -> Promise -> [*]
+export { default as all } from './all';
 
-export function race(tasks=[]) {
-  return async x => await Promise.race(Array.from(tasks, task => task(x)));
-}
+// race :: [(a -> *)] -> a -> Promise -> *
+export { default as race } from './race';
 
-// export function unary(f) {
-//   return (...args) => x => f(x, ...args);
-// }
-//
-// export function partial(numArgs=1) {
-//   return f => (...args) => (..._args) => {
-//     return f(..._args.slice(0, numArgs).concat(...args));
-//   };
-// }
-//
-// export function compose(f, g) {
-//   return async (...args) => await f(await g(...args));
-// }
+// when :: (a -> Bool) -> (a -> *) -> (a -> *) -> a -> Promise -> *
+export { default as when } from './when';
 
-export async function sleep(ms=0) {
-  return new Promise(fulfill => {
-    setTimeout(fulfill, ms);
-  });
-}
+// delay :: Number -> (a -> *) -> a -> Promise -> *
+export { default as delay } from './delay';
 
-// export function DOMEvent(name) {
-//   return elem => new Promise(fulfill => {
-//     function listener (...args) {
-//       elem.removeEventListener(name, listener, false);
-//       fulfill(...args);
-//     }
-//     elem.addEventListener(name, listener, false);
-//   });
-// }
+// sleep :: Number -> Promise -> undefined
+export { default as sleep } from './sleep';
 
-// delay :: Number -> (...a -> b)
-export function delay(ms=0) {
-  // for some reason async arrow fn
-  // does not await f(...args)
-  // but normal async function does
-  return f => async function (...args) {
-    await sleep(ms);
-    return await f(...args);
-  };
-}
+// curry :: (* -> a) -> Number -> (* -> a)
+export { default as curry } from './curry';
 
-export function identity(x) {
-  return x;
-}
-
+// until :: (a -> Bool) -> (a -> *) -> a -> Promise -> *
 export function until(f) {
   return g => async function (...args) {
     return await trampoline(
@@ -138,6 +104,30 @@ export function repeat(f) {
   };
 }
 
+// export function unary(f) {
+//   return (...args) => x => f(x, ...args);
+// }
+//
+// export function partial(numArgs=1) {
+//   return f => (...args) => (..._args) => {
+//     return f(..._args.slice(0, numArgs).concat(...args));
+//   };
+// }
+//
+// export function compose(f, g) {
+//   return async (...args) => await f(await g(...args));
+// }
+
+// export function DOMEvent(name) {
+//   return elem => new Promise(fulfill => {
+//     function listener (...args) {
+//       elem.removeEventListener(name, listener, false);
+//       fulfill(...args);
+//     }
+//     elem.addEventListener(name, listener, false);
+//   });
+// }
+
 // typeOf :: String -> (a -> Bool)
 // export function typeOf(type) {
 //   return x => {
@@ -151,15 +141,6 @@ export function repeat(f) {
 // export function resolve(f) {
 //   return async (...args) => await f(...args);
 // }
-
-// when :: (a -> Bool) -> (a -> b) -> (a -> c)
-export function when(expect) {
-  return (okay) =>
-    (nope=identity) =>
-      async value => await expect(value)
-        ? await okay(value)
-        : await nope(value);
-}
 
 // export function trace(x){
 //   return !console.log(x)

@@ -35,11 +35,10 @@ API
 
 ### pipe
 
-##### `pipe([Function f, ...]) -> Function(*) -> Promise -> *`
+##### `[(a -> *)] -> a -> Promise -> *`
 
-Accepts an array of functions or async functions and returns a unary function
-that accepts any value. That value will be passed to the first function in the
-array. Subsquent functions receive the return value of the previous function.
+Passes a value through an array of functions sequentially; Returns value fulfilled
+from final function in the array.
 
 **Example:**
 
@@ -59,17 +58,21 @@ void async () => {
 
 }()
 ```
+**Params:**
+
+|        | Type         | Name  | Description |
+|--------|--------------|-------|-------------|
+|@param  | `[Function]` | funcs | Array of functions
+|@param  | `*`          | x     | Any value
+|@return | `Promise`    |       | Fulfills with value returned by final function in the array
 
 <hr />
 
 ### all
 
-##### `all([Function f, ...]) -> Function(*) -> Promise -> [*]`
+##### `[(a -> *)] -> a -> Promise -> [*]`
 
-Accepts an array of functions or async functions and returns a unary function
-that accepts any value. That value will be passed to all functions in the array,
-which are then executed concurrently. Returns an array of values returned from
-each function in the array
+Executes an array of functions concurrently; returns an array of fulfilled values.
 
 **Example:**
 
@@ -88,17 +91,23 @@ void async () => {
   // -> [ 'Hello, world!', '¡Hola, world!', 'Bonjour, world!' ]
 
 }()
+
 ```
+**Params:**
+
+|        | Type         | Name  | Description |
+|--------|--------------|-------|-------------|
+|@param  | `[Function]` | funcs | Array of functions
+|@param  | `*`          | x     | Any value
+|@return | `Promise`    |       | Fulfills with an array of values returned from each function in `funcs`
 
 <hr />
 
 ### race
 
-##### `race([Function f, ...]) -> Function(*) -> Promise -> *`
+##### `[(a -> *)] -> a -> Promise -> *`
 
-Accepts an array of functions or async functions and returns a unary function
-that accepts any value. That value will be passed to all functions in the array,
-which are then executed concurrently. Returns the value of the first function to resolve.
+Executes an array of functions concurrently; Returns value of first function to resolve.
 
 **Example:**
 
@@ -125,14 +134,22 @@ void async () => {
 }()
 ```
 
+**Params:**
+
+|        | Type         | Name  | Description |
+|--------|--------------|-------|-------------|
+|@param  | `[Function]` | funcs | Array of functions
+|@param  | `*`          | x     | Any value
+|@return | `Promise`    |       | Fulfills with value of first function in `funcs` to resolve
+
 <hr />
 
 ### until
 
-##### `until(Function test)(Function cb) -> Function(*) -> Promise -> *`
+##### `(a -> Bool) -> (a -> *) -> a -> Promise -> *`
 
-Executes `cb` until `test` returns `true`. The return value of
-the previous `cb` is passed into the next on each iteration.
+Executes function until `done` returns `true`. The return value of
+the repeating function is passed into itself on each successive iteration.
 
 **Example:**
 
@@ -162,13 +179,22 @@ void async () => {
 }()
 ```
 
+**Params:**
+
+|        | Type       | Name  | Description |
+|--------|------------|-------|-------------|
+|@param  | `Function` | done  | Accepts value returned by `f`. `f` is called repeatedly until this function returns `true`
+|@param  | `Function` | f     | Function to be called repeatedly. Passes its own return value into itself on each iteration
+|@param  | `*`        | x     | Any value
+|@return | `Promise`  |       | Fulfills result of `f` after n recursive calls
+
 <hr />
 
 ### when
 
-##### `when(Function test)(Function pass)(Function fail) -> Function(*) -> Promise -> *`
+##### `(a -> Bool) -> (a -> *) -> (a -> *) -> a -> Promise -> *`
 
-Executes `pass` if `test` returns `true`, otherwise it calls `fail`.
+Tests a value and passes value to either the `pass` function or the `fail` function
 
 **Example:**
 
@@ -194,13 +220,24 @@ void async () => {
 }()
 ```
 
+**Params:**
+
+|        | Type       | Name  | Default  | Description |
+|--------|------------|-------|----------|-------------|
+|@param  | `Function` | test  |          | Accepts `x`; returns `true` or `false`
+|@param  | `Function` | pass  |          | Called with `x` if `test` returns `true`
+|@param  | `Function` | fail  | `a => a` | Called with `x` if `test` returns `false`
+|@param  | `*`        | x     |          | Any value
+|@return | `Promise`  |       |          | Fulfills with value returned by `pass` or `fail`
+
+
 <hr />
 
 ### delay
 
-##### `delay(Number ms)(Function cb) -> Function(*) -> Promise -> *`
+##### `Number -> (a -> *) -> a -> Promise -> *`
 
-Accepts `ms`, number of milliseconds to wait, before executing `cb`.
+Accepts `ms`, number of milliseconds to wait, before executing function `f`.
 
 **Example:**
 
@@ -216,3 +253,12 @@ void async () => {
 
 }()
 ```
+
+**Params:**
+
+|        | Type       | Name  | Description |
+|--------|------------|-------|-------------|
+|@param  | `Number`   | funcs | Array of functions
+|@param  | `Function` | f     | Function to be called after timeout
+|@param  | `*`        | x     | Any value
+|@return | `Promise`  |       | Fulfills with value returned by `f(x)`
