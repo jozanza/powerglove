@@ -8,6 +8,7 @@ import {
   when,
   identity,
   delay,
+  sleep,
   until,
   race
 } from '../src'
@@ -18,8 +19,20 @@ console.log('---------')
 
 describe('Utils', () => {
 
-  describe('race([Function])', () => {
-    it('', async () => {
+  describe('race :: [(a -> *)] -> a -> Promise -> *', () => {
+    it('should curry', async () => {
+      const tasks = [
+        delay(0)(x => `a${x}`),
+        delay(1)(x => `b${x}`)
+      ]
+      expect(
+        await race(tasks, '!')
+      )
+      .to.equal(
+        await race(tasks)('!')
+      )
+    })
+    it('should resolve the value of the first function to fulfill', async () => {
       const allGone = ([x]) => x <= 0
       const untilAllGone = until(allGone)
       const fastSubtract = untilAllGone(
@@ -31,9 +44,7 @@ describe('Utils', () => {
         )
       )
       const firstToZero = race([fastSubtract, slowSubtract])
-      expect((await firstToZero([10]))[1]).to.equal('a')
-    })
-    it('', async () => {
+
       const fast = delay(200)(x => `${x} Speed Racer!`)
       const faster = delay(100)(x => `${x} Racer X!`)
       const fastest = delay(0)(x => `${x} Chim Chim!`)
@@ -42,24 +53,46 @@ describe('Utils', () => {
         faster,
         fastest
       ])
+
+      expect((await firstToZero([10]))[1]).to.equal('a')
       expect(await announceWinner('And the winner is...'))
         .to
         .equal(`And the winner is... Chim Chim!`)
     })
   })
 
-  describe('delay(Number)(Function)', () => {
+  describe('delay :: Number -> (a -> *) -> a -> Promise -> *', () => {
     it('should execute the function after ~300ms', async () => {
       const timeSince = delay(300)(ms => Date.now() - ms)
       expect(await timeSince(Date.now())).to.be.within(300, 310)
     })
   })
 
-  describe('when(Function)(Function)(Function) -> Promise -> *', async () => {
+  describe('when :: (a -> Bool) -> (a -> *) -> (a -> *) -> a -> Promise -> *', async () => {
     const over9000 = lvl => lvl > 9000
     const praise = lvl => `Holy crap! ${lvl}?! THAT'S OVER 9000!`
     const insult = lvl => `Pffft. ${lvl}? Is that all you got???`
     const analyzePowerLevel = when(over9000)(praise)(insult)
+    it('should curry', async () => {
+      expect(
+        await analyzePowerLevel(1)
+      )
+      .to.equal(
+        await when(over9000, praise, insult, 1)
+      )
+      expect(
+        await analyzePowerLevel(1)
+      )
+      .to.equal(
+        await when(over9000, praise)(insult)(1)
+      )
+      expect(
+        await analyzePowerLevel(1)
+      )
+      .to.equal(
+        await when(over9000)(praise, insult)(1)
+      )
+    })
     it('should praise when over 9000', async () => {
       expect(await analyzePowerLevel(9001)).to.equal(
         `Holy crap! 9001?! THAT'S OVER 9000!`
@@ -73,7 +106,7 @@ describe('Utils', () => {
   })
 
   describe('until(Function)(Function) -> Promise -> *', function () {
-    this.timeout(30000); // tests may take a while
+    this.timeout(60000); // tests may take a while
     it('should return identity when 0 calls are made', async () => {
       const returnTrue = () => true
       const throwErr = () => { throw new Error() }
@@ -94,7 +127,7 @@ describe('Utils', () => {
     })
   })
 
-  describe('all([Function | Promise]) -> Promise -> [*]', () => {
+  describe('all :: [(a -> *)] -> a -> Promise -> [*]', () => {
     it('should place all values in an array', async () => {
       const sayHi = all([
         x => `Hello, ${x}!`,

@@ -1,6 +1,6 @@
 {
   "name": "powerglove",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Async generator-based control flow",
   "author": "Josiah Savary <hello@jsavary.com> (https://jsavary.com)",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "engines": {
     "node": "4.0.0",
-    "npm": "2.14"
+    "npm": "3.3.4"
   },
   "scripts": {
     "postinstall": "npm run -s babel",

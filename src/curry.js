@@ -5,9 +5,9 @@
  * @return {Function}                Partially applied function
  */
 export default function curry(f, arity=f.length) {
-  return function g(...args) {
+  return function curryable(...args) {
     return args.length >= arity
       ? f(...args.slice(0, arity))
-      : (..._args) => g(...args.concat(_args.length ? _args : [undefined]));
+      : (..._args) => curryable(...args.concat(_args.length ? _args : [undefined]));
   };
 }
