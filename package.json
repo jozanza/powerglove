@@ -1,6 +1,6 @@
 {
   "name": "powerglove",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Async generator-based control flow",
   "author": "Josiah Savary <hello@jsavary.com> (https://jsavary.com)",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "npm": "3.3.4"
   },
   "scripts": {
-    "postinstall": "npm run -s compile",
+    "build": "npm run -s compile",
     "test": "npm run -s mocha -- --reporter nyan --require mocha.config test/*.spec.js",
     "compile": "npm run -s rimraf -- lib && npm run -s babel -- src --out-dir lib --stage 0 --optional runtime",
     "lint": "npm run -s eslint -s -- src && cat winning.txt",

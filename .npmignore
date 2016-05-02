@@ -1,0 +1,10 @@
+// OSX
+.DS_Store
+.Trashes
+
+// Node
+node_modules
+npm-debug.log
+
+// Built files
+coverage
