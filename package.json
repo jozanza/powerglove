@@ -45,19 +45,17 @@
   "bugs": {
     "url": "https://github.com/jozanza/powerglove/issues"
   },
-  "dependencies": {
-    "babel": "5.8.21",
-    "babel-runtime": "^5.8.20",
-    "rimraf": "2.4.2"
-  },
   "devDependencies": {
-    "babel-eslint": "4.0.10",
+    "babel": "5.8.21",
+    "babel-eslint": "5.0.4",
+    "babel-runtime": "5.8.20",
     "chai": "3.2.0",
-    "coveralls": "^2.11.4",
-    "eslint": "1.2.1",
+    "coveralls": "2.11.4",
+    "eslint": "1.10.3",
     "istanbul": "0.3.18",
     "jsdom": "6.1.0",
     "mocha": "2.2.5",
-    "pre-commit": "1.1.1"
+    "pre-commit": "1.1.1",
+    "rimraf": "2.4.2"
   }
 }
