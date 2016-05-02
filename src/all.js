@@ -7,7 +7,7 @@ import curry from './curry';
  * @return {Promise}          Fulfills with array of values returned from resolved tasks
  */
 async function all(funcs, x) {
-  return await* Array.from(funcs, f => f(x));
+  return Promise.all(Array.from(funcs, f => f(x)));
 }
 
 export default curry(all);
