@@ -7,7 +7,7 @@
  * Creates a generator that iterates a collection of a/sync functions
  * Does not allow multiple functions to run concurrently
  *
- * @param  {[Function]} tasks Collection of functions to be called in sequence
+ * @param  {Function[]} tasks Collection of functions to be called in sequence
  * @return {Generator}        Sequence -- collection iterator
  */
 export async function *sequence(tasks) {
@@ -52,7 +52,7 @@ export async function pipeSequence(next, value) {
  *
  * @param  {*}          value The seed value for the pipe
  *                            immediately invoked if instance of Function
- * @param  {[Function]} tasks An array of functions to pipe `value` through
+ * @param  {Function[]} tasks An array of functions to pipe `value` through
  * @return {Promise}          Final result of pipe
  */
 export function pipe(tasks=[]) {

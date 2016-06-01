@@ -60,11 +60,16 @@ void async () => {
 ```
 **Params:**
 
-|        | Type         | Name  | Description |
-|--------|--------------|-------|-------------|
-|@param  | `[Function]` | funcs | Array of functions
-|@param  | `*`          | x     | Any value
-|@return | `Promise`    |       | Fulfills with value returned by final function in the array
+| Type         | Name  | Description |
+|--------------|-------|-------------|
+| `Function[]` | funcs | Array of functions
+| `*`          | x     | Any value
+
+**Return:**
+
+| Type      | Description |
+|-----------|-------------|
+| `Promise` | Fulfills with value returned by last index of `func`
 
 <hr />
 
@@ -95,11 +100,16 @@ void async () => {
 ```
 **Params:**
 
-|        | Type         | Name  | Description |
-|--------|--------------|-------|-------------|
-|@param  | `[Function]` | funcs | Array of functions
-|@param  | `*`          | x     | Any value
-|@return | `Promise`    |       | Fulfills with an array of values returned from each function in `funcs`
+| Type         | Name  | Description |
+|--------------|-------|-------------|
+| `Function[]` | funcs | Array of functions
+| `*`          | x     | Any value
+
+**Return:**
+
+| Type      | Description |
+|-----------|-------------|
+| `Promise` | Fulfills with an array of values returned from each function in `funcs`
 
 <hr />
 
@@ -136,11 +146,16 @@ void async () => {
 
 **Params:**
 
-|        | Type         | Name  | Description |
-|--------|--------------|-------|-------------|
-|@param  | `[Function]` | funcs | Array of functions
-|@param  | `*`          | x     | Any value
-|@return | `Promise`    |       | Fulfills with value of first function in `funcs` to resolve
+| Type         | Name  | Description |
+|--------------|-------|-------------|
+| `Function[]` | funcs | Array of functions
+| `*`          | x     | Any value
+
+**Return:**
+
+| Type      | Description |
+|-----------|-------------|
+| `Promise` | Fulfills with value of first function in `funcs` to resolve
 
 <hr />
 
@@ -181,12 +196,17 @@ void async () => {
 
 **Params:**
 
-|        | Type       | Name  | Description |
-|--------|------------|-------|-------------|
-|@param  | `Function` | done  | Accepts value returned by `f`. `f` is called repeatedly until this function returns `true`
-|@param  | `Function` | f     | Function to be called repeatedly. Passes its own return value into itself on each iteration
-|@param  | `*`        | x     | Any value
-|@return | `Promise`  |       | Fulfills result of `f` after n recursive calls
+| Type       | Name  | Description |
+|------------|-------|-------------|
+| `Function` | done  | Accepts value returned by `f`. `f` is called repeatedly until this function returns `true`
+| `Function` | f     | Function to be called repeatedly. Passes its own return value into itself on each iteration
+| `*`        | x     | Any value
+
+**Return:**
+
+| Type      | Description |
+|-----------|-------------|
+| `Promise` | Fulfills result of `f` after n recursive calls
 
 <hr />
 
@@ -222,13 +242,18 @@ void async () => {
 
 **Params:**
 
-|        | Type       | Name  | Default  | Description |
-|--------|------------|-------|----------|-------------|
-|@param  | `Function` | test  |          | Accepts `x`; returns `true` or `false`
-|@param  | `Function` | pass  |          | Called with `x` if `test` returns `true`
-|@param  | `Function` | fail  | `a => a` | Called with `x` if `test` returns `false`
-|@param  | `*`        | x     |          | Any value
-|@return | `Promise`  |       |          | Fulfills with value returned by `pass` or `fail`
+| Type       | Name  | Default  | Description |
+|------------|-------|----------|-------------|
+| `Function` | test  |          | Accepts `x`; returns `true` or `false`
+| `Function` | pass  |          | Called with `x` if `test` returns `true`
+| `Function` | fail  | `a => a` | Called with `x` if `test` returns `false`
+| `*`        | x     |          | Any value
+
+**Return:**
+
+| Type      | Description |
+|-----------|-------------|
+| `Promise` | Fulfills with value returned by `pass` or `fail`
 
 
 <hr />
@@ -256,9 +281,14 @@ void async () => {
 
 **Params:**
 
-|        | Type       | Name  | Description |
-|--------|------------|-------|-------------|
-|@param  | `Number`   | funcs | Array of functions
-|@param  | `Function` | f     | Function to be called after timeout
-|@param  | `*`        | x     | Any value
-|@return | `Promise`  |       | Fulfills with value returned by `f(x)`
+| Type       | Name  | Description |
+|------------|-------|-------------|
+| `Number`   | funcs | Array of functions
+| `Function` | f     | Function to be called after timeout
+| `*`        | x     | Any value
+
+**Return:**
+
+| Type      | Description |
+|-----------|-------------|
+| `Promise` | Fulfills with value returned by `f(x)`

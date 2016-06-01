@@ -1,19 +1,18 @@
 {
   "name": "powerglove",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Async generator-based control flow",
   "author": "Josiah Savary <hello@jsavary.com> (https://jsavary.com)",
   "license": "MIT",
   "homepage": "https://github.com/jozanza/powerglove",
   "main": "lib/index.js",
   "engines": {
-    "node": "4.0.0",
-    "npm": "3.3.4"
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
   },
   "scripts": {
-    "build": "npm run -s compile",
+    "build": "npm run -s rimraf -- lib && npm run -s babel -- src -d lib",
     "test": "npm run -s mocha -- --reporter nyan --require mocha.config test/*.spec.js",
-    "compile": "npm run -s rimraf -- lib && npm run -s babel -- src --out-dir lib --stage 0 --optional runtime",
     "lint": "npm run -s eslint -s -- src && cat winning.txt",
     "coverage": "npm run -s istanbul -- cover node_modules/.bin/_mocha -- --reporter nyan --require mocha.config test/*.spec.js",
     "update-coverage": "npm run -s coverage && cat ./coverage/lcov.info | npm run -s coveralls && rm -rf ./coverage",
@@ -45,10 +44,19 @@
   "bugs": {
     "url": "https://github.com/jozanza/powerglove/issues"
   },
+  "dependencies": {
+    "babel-runtime": "6.9.2"
+  },
   "devDependencies": {
-    "babel": "5.8.21",
-    "babel-eslint": "5.0.4",
-    "babel-runtime": "5.8.20",
+    "babel-cli": "6.9.0",
+    "babel-core": "6.9.1",
+    "babel-eslint": "6.0.4",
+    "babel-plugin-syntax-async-generators": "6.8.0",
+    "babel-plugin-transform-regenerator": "6.9.0",
+    "babel-plugin-transform-runtime": "6.9.0",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-stage-0": "6.5.0",
+    "babel-register": "6.9.0",
     "chai": "3.2.0",
     "coveralls": "2.11.4",
     "eslint": "1.10.3",
