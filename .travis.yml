@@ -18,3 +18,7 @@ script:
   - npm run -s lint
   - npm run -s test
   - npm run -s update-coverage
+
+addons:
+    code_climate:
+        repo_token: 5ff4e439344b8981c89c0fd22dd7481696bb84270969871b9bec03494bb74c39
