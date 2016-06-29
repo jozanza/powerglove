@@ -79,7 +79,7 @@
     "quote-props": [2, "as-needed"],
     "quotes": [2, "single"],
     "semi": [2, "always"],
-    "space-after-keywords": 2,
+    "keyword-spacing": [2, { "before": true, "after": true }],
     "space-return-throw-case": 2,
     "spaced-comment": 0,
     "no-var": 2,
