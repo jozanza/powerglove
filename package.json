@@ -45,7 +45,7 @@
     "url": "https://github.com/jozanza/powerglove/issues"
   },
   "dependencies": {
-    "babel-runtime": "6.9.2"
+    "babel-runtime": "6.11.6"
   },
   "devDependencies": {
     "babel-cli": "6.9.0",
